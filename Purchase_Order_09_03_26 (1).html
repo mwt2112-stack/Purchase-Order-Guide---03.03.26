@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Columbia University - PO Guidance & Sourcing Tool</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --blue: #3f57bd;
+  --blue-dark: #2e42a0;
+  --navy: #183765;
+  --purple: #6b21a8;
+  --purple-light: #7e22ce;
+  --ink: #172033;
+  --muted: #64748b;
+  --line: #d8dee8;
+  --paper-ink: #1a1d20;
+  --paper-ink-dim: #5a5d62;
+  --gold: #B68F47;
+  --gold-bright: #C9A050;
+  --gold-bg: #fff8df;
+  --bg: #e9e9e9;
+  --white: #ffffff;
+  --off-white: #fffdf6;
+  --green-solid: #16a34a;
+  --amber-bg: #fffbeb;
+  --amber-line: #fde68a;
+  --amber: #92400e;
+  --red-solid: #dc2626;
+  --red-bg: #fef2f2;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Source Sans 3', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-image: 
+    linear-gradient(rgba(117,168,201,.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(117,168,201,.13) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px;
+  padding-bottom: 3rem;
+}
+
+/* Sticky Topbar Header */
+.topbar {
+  height: 60px;
+  background: var(--white);
+  border-bottom: 1px solid #b8c5d8;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: .9rem;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.logo {
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.logo span {
+  display: block;
+  font-size: 7px;
+  letter-spacing: .1em;
+  font-weight: 600;
+  color: var(--muted);
+}
+.topbar-divider { width: 1px; height: 26px; background: var(--line); }
+.topbar-title { font-size: 16px; color: var(--navy); font-weight: 600; }
+.revised-pill {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: var(--gold-bg);
+  border: 1.5px solid var(--gold);
+  color: var(--gold-bright);
+  border-radius: 999px;
+  padding: .2rem .6rem;
+  font-weight: 700;
+}
+
+/* Main Container */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Hero Section */
+.hero { margin-bottom: 1.5rem; }
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .66rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .6rem;
+  font-weight: 700;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--paper-ink);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin-bottom: .7rem;
+}
+.hero h1 em { font-style: italic; color: var(--blue); }
+.hero-rule { width: 46px; height: 3px; background: var(--gold); margin-bottom: .8rem; }
+.hero-sub { font-size: 1.02rem; color: var(--paper-ink-dim); line-height: 1.5; }
+
+/* Interactive Sourcing Calculator */
+.interactive-calc {
+  background: var(--white);
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 4px 12px rgba(24,55,101,.06);
+}
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+.calc-field label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--navy);
+}
+.calc-field select, .calc-field input {
+  padding: .6rem .8rem;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .9rem;
+  color: var(--ink);
+  background: var(--off-white);
+  outline: none;
+}
+.calc-field select:focus, .calc-field input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(63,87,189,.12);
+}
+
+.calc-result-box {
+  margin-top: 1.2rem;
+  background: #f8faff;
+  border: 1.5px solid var(--blue);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.calc-result-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  color: var(--navy);
+}
+.calc-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  font-weight: 700;
+  padding: .4rem .8rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+.badge-po { background: var(--blue); color: #fff; }
+.badge-quotes { background: var(--gold-bg); color: var(--amber); border: 1px solid var(--gold); }
+
+/* PO Comparison Grid */
+.po-comparison-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2.25rem;
+}
+
+.po-box {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(24,55,101,.04);
+}
+
+.po-box.required { border: 2px solid #4f9d6f; }
+.po-box.not-required { border: 2px solid #c15f5f; }
+/* Let the colored title bar sit flush to the box edges */
+.po-box { overflow: hidden; padding-top: 0; }
+
+.po-box-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+
+/* Colored filled header bar — mirrors the fund-card headers below */
+.po-box-header {
+  margin: 0 -1.5rem 1.2rem;
+  padding: 1rem 1.5rem;
+  color: var(--white);
+}
+.po-box.required .po-box-header { background: #4f9d6f; }
+.po-box.not-required .po-box-header { background: #c15f5f; }
+
+.po-box-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  color: var(--white);
+  margin-bottom: .25rem;
+}
+
+.po-box-sub {
+  font-size: .82rem;
+  color: rgba(255,255,255,.9);
+  margin: 0;
+}
+
+.po-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+
+/* Modal-Trigger Tile Button Styling */
+.po-tile {
+  background: var(--off-white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.po-tile:hover {
+  border-color: var(--blue);
+  background: #f8faff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+}
+
+.po-tile-icon {
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.po-tile-icon.check { color: var(--green-solid); }
+.po-tile-icon.cross { color: var(--red-solid); }
+
+.po-tile-text {
+  font-weight: 700;
+  color: var(--paper-ink);
+  font-size: .92rem;
+}
+
+/* --- QUOTE MATRIX SECTION --- */
+.quotes-section {
+  margin-bottom: 2.25rem;
+}
+.quotes-title {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  color: var(--paper-ink);
+  margin-bottom: .5rem;
+}
+.quotes-title em { font-style: italic; color: var(--blue); }
+.quotes-intro {
+  font-size: .95rem;
+  color: var(--paper-ink-dim);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.quotes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.quote-card {
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.03);
+}
+
+.quote-card-header {
+  padding: .85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--white);
+}
+.quote-card-header.navy { background: var(--navy); }
+.quote-card-header.purple { background: var(--purple-light); }
+
+.quote-card-header h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.header-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: .2rem .5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.header-badge.gold-badge {
+  color: var(--gold-bright);
+  background: rgba(0,0,0,0.18);
+  border-color: var(--gold);
+}
+
+.quote-tier {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.quote-tier:last-child { border-bottom: none; }
+
+.tier-range {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: .2rem;
+}
+
+.tier-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: .25rem;
+}
+.quote-card-header.purple ~ .quote-tier .tier-title {
+  color: var(--purple);
+}
+
+.tier-desc {
+  font-size: .84rem;
+  color: var(--paper-ink-dim);
+  line-height: 1.4;
+}
+
+/* Pop-up Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(23, 32, 51, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 1rem;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--white);
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  max-width: 500px;
+  width: 100%;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,.2);
+  transform: translateY(10px);
+  transition: transform 0.25s ease;
+  position: relative;
+}
+
+.modal-overlay.active .modal-card {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .8rem;
+}
+
+.modal-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  color: var(--navy);
+}
+
+.modal-body {
+  font-size: .92rem;
+  color: var(--paper-ink-dim);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.modal-close-btn {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: .5rem 1.2rem;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  font-weight: 700;
+  cursor: pointer;
+  float: right;
+  text-transform: uppercase;
+}
+
+.modal-close-btn:hover { background: var(--blue-dark); }
+
+/* Standard Cards */
+.card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(24,55,101,.04);
+}
+
+.card-navy { border: 2px solid var(--navy); }
+
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.eyebrow-card {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+
+/* PO Types Cards */
+.po-type-box {
+  background: var(--off-white);
+  border-left: 4px solid var(--blue);
+  padding: .85rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-top: .75rem;
+}
+.po-type-box.catalog { border-left-color: var(--green-solid); }
+.po-type-title {
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--navy);
+  display: flex;
+  justify-content: space-between;
+}
+.po-type-desc {
+  font-size: .83rem;
+  color: var(--muted);
+  margin-top: .25rem;
+  line-height: 1.4;
+}
+
+/* Roles Matrix Table */
+.table-container {
+  overflow-x: auto;
+  margin-top: .75rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+  text-align: left;
+}
+th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .6rem .8rem;
+}
+td {
+  padding: .65rem .8rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--paper-ink-dim);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: var(--off-white); }
+td strong { color: var(--navy); }
+
+@media(max-width: 768px) {
+  .calc-grid, .po-comparison-container, .quotes-grid { grid-template-columns: 1fr; }
+  .topbar-title { display: none; }
+  .calc-result-box { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">♔ Columbia University<span>PROCUREMENT SERVICES</span></div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-title">Purchase Order Policy Reference</div>
+  <span class="revised-pill">Uniform Guidance Updated</span>
+</div>
+
+<main>
+
+  <!-- Hero Header -->
+  <div class="hero">
+    <div class="hero-eyebrow">Purchasing Reference Guide</div>
+    <h1>When is a <em>Purchase Order</em> Required?</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">A Purchase Order (PO) forms a binding agreement with vendors based on an approved Requisition. Use this single-page guide and interactive calculator to determine PO requirements, bidding thresholds, and workflow rules under updated Uniform Guidance standards.</p>
+  </div>
+
+  <!-- Interactive PO & Quote Calculator -->
+  <div class="interactive-calc">
+    <div class="eyebrow-card">Interactive Rule Checker</div>
+    <div class="po-box-title" style="margin-bottom: .2rem;">Check PO & Quote Requirements</div>
+    <p style="font-size: .85rem; color: var(--muted);">Select your transaction parameters to determine whether a Purchase Order is mandatory and how many quotes are required.</p>
+
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label for="calc-vendor">Vendor Type / Contract</label>
+        <select id="calc-vendor" onchange="updateCalc()">
+          <option value="" selected disabled>Select Vendor Type / Contract</option>
+          <option value="uwpa-in">UwPA / Catalog Vendor (In-Scope)</option>
+          <option value="standard">Standard Non-Catalog Vendor</option>
+          <option value="solesource">Sole Source Vendor</option>
+        </select>
+      </div>
+
+      <div class="calc-field">
+        <label for="calc-funding">Funding Source</label>
+        <select id="calc-funding" onchange="updateCalc()">
+          <option value="" selected disabled>Select Funding Source</option>
+          <option value="dept">Non-sponsored funds (Departmental)</option>
+          <option value="sponsored">Sponsored funds (Grants/Federal)</option>
+        </select>
+      </div>
+
+      <div class="calc-field">
+        <label for="calc-amount">Purchase Amount ($USD)</label>
+        <input type="number" id="calc-amount" value="0" placeholder="Enter amount" oninput="updateCalc()">
+      </div>
+    </div>
+
+    <div class="calc-result-box">
+      <div>
+        <div class="calc-result-title" id="calc-po-status">PO Status: Please select Vendor Type & Funding Source</div>
+        <div style="font-size: .83rem; color: var(--paper-ink-dim); margin-top: .2rem;" id="calc-quote-status">Bidding Threshold: Select parameters to view requirements</div>
+      </div>
+      <div id="calc-badges" style="display: flex; gap: .5rem; flex-wrap: wrap;">
+        <span class="calc-badge badge-po" id="badge-po-text">Pending Selection</span>
+        <span class="calc-badge badge-quotes" id="badge-quote-text">--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PO Requirements Tiles -->
+  <div class="po-comparison-container">
+    
+    <!-- Required Section -->
+    <div class="po-box required">
+      <div class="po-box-header">
+        <div class="po-box-eyebrow">Purchasing Criteria</div>
+        <h2 class="po-box-title">A PO IS Required For:</h2>
+        <div class="po-box-sub">Click a category for details:</div>
+      </div>
+
+      <div class="po-items-list">
+        <div class="po-tile" onclick="openModal('Goods over $500', 'Tangible goods valued above $500. Catalog POs are used for in-scope UwPA suppliers, while Non-Catalog POs are used for non-UwPA suppliers.', 'check')">
+          <span class="po-tile-icon check">✓</span>
+          <span class="po-tile-text">Goods over $500</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('All Professional Services', 'Service providers, consultants, graphic designers, project management, relocation, and creative agencies.', 'check')">
+          <span class="po-tile-icon check">✓</span>
+          <span class="po-tile-text">All Professional Services</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Furniture & Capital Equipment', 'Office furniture and major equipment purchases.', 'check')">
+          <span class="po-tile-icon check">✓</span>
+          <span class="po-tile-text">Furniture & Capital Equipment</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Restricted Commodities', 'Purchases requiring special central approvers or when P-Card is not viable.', 'check')">
+          <span class="po-tile-icon check">✓</span>
+          <span class="po-tile-text">Restricted Commodities</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Supplier Requirement', 'Any transaction where the supplier requests a formal PO.', 'check')">
+          <span class="po-tile-icon check">✓</span>
+          <span class="po-tile-text">Supplier Requirement</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOT Required Section -->
+    <div class="po-box not-required">
+      <div class="po-box-header">
+        <div class="po-box-eyebrow">Exemptions & Direct Payment</div>
+        <h2 class="po-box-title">A PO is NOT Required For:</h2>
+        <div class="po-box-sub">Click a category for details:</div>
+      </div>
+
+      <div class="po-items-list">
+        <div class="po-tile" onclick="openModal('Low-Value Goods', 'Non-restricted goods valued at $500 or less where P-Card is not a viable option.', 'cross')">
+          <span class="po-tile-icon cross">✕</span>
+          <span class="po-tile-text">Low-Value Goods</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Hospitality & Catering', 'On-site catering expenses.', 'cross')">
+          <span class="po-tile-icon cross">✕</span>
+          <span class="po-tile-text">Hospitality & Catering</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Direct Financial Disbursements', 'Honoraria, stipends, prizes, awards, and human subject payments.', 'cross')">
+          <span class="po-tile-icon cross">✕</span>
+          <span class="po-tile-text">Direct Financial Disbursements</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Recurring Administrative Fees', 'Subscriptions, memberships, and utility payments.', 'cross')">
+          <span class="po-tile-icon cross">✕</span>
+          <span class="po-tile-text">Recurring Administrative Fees</span>
+        </div>
+
+        <div class="po-tile" onclick="openModal('Travel & Legal', 'Travel reimbursements, direct travel vendor payments, and OGC-approved legal fees.', 'cross')">
+          <span class="po-tile-icon cross">✕</span>
+          <span class="po-tile-text">Travel & Legal</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How Many Quotes Do I Need Section (Moved Below PO Criteria) -->
+  <div class="quotes-section">
+    <h2 class="quotes-title">How many <em>quotes</em> do I need?</h2>
+    <p class="quotes-intro">Competitive sourcing scales with the dollar amount — but the rules diverge by funding source. Check your <em>project number</em> to know which card applies: non-sponsored projects begin with <strong>UR, GT, or EN</strong>, while sponsored projects (grants) begin with <strong>GG or PG</strong>.</p>
+
+    <div class="quotes-grid">
+      
+      <!-- Non-sponsored funds Card -->
+      <div class="quote-card">
+        <div class="quote-card-header navy">
+          <h3>Non-sponsored funds</h3>
+          <span class="header-badge gold-badge">UR - GT - EN</span>
+        </div>
+        
+        <div class="quote-tier">
+          <div class="tier-range">Up to $15,000</div>
+          <div class="tier-title">1 quote / proposal</div>
+          <div class="tier-desc">Price must be fair and reasonable. Seek competition where practical.</div>
+        </div>
+
+        <div class="quote-tier">
+          <div class="tier-range">$15,001 – $350,000</div>
+          <div class="tier-title">Minimum 2 written quotes</div>
+          <div class="tier-desc">Or a sole/single-source justification in CU Marketplace if non-competitive.</div>
+        </div>
+
+        <div class="quote-tier">
+          <div class="tier-range">$350,001 and over</div>
+          <div class="tier-title">Minimum 3 written quotes</div>
+          <div class="tier-desc">Formal RFP or sealed-bid process. Coordinate with Purchasing.</div>
+        </div>
+      </div>
+
+      <!-- Sponsored funds Card -->
+      <div class="quote-card">
+        <div class="quote-card-header purple">
+          <h3>Sponsored funds</h3>
+          <span class="header-badge gold-badge">GG - PG</span>
+        </div>
+
+        <div class="quote-tier">
+          <div class="tier-range">Up to $15,000</div>
+          <div class="tier-title">1 quote / proposal</div>
+          <div class="tier-desc">Micro-purchase threshold. Price must be fair and reasonable.</div>
+        </div>
+
+        <div class="quote-tier">
+          <div class="tier-range">$15,001 – $350,000</div>
+          <div class="tier-title">Multiple written quotes</div>
+          <div class="tier-desc">From an adequate number of qualified sources — no fixed count. Retain the price analysis.</div>
+        </div>
+
+        <div class="quote-tier">
+          <div class="tier-range">$350,001 and over</div>
+          <div class="tier-title">Formal competitive process</div>
+          <div class="tier-desc">Sealed bid or competitive proposal from adequate qualified sources. Draft the Scope of Work and Bid Prep Form, then consult Purchasing.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PO Types Section -->
+  <div class="card card-navy" style="margin-bottom: 1.75rem;">
+    <div class="eyebrow-card">CU Marketplace</div>
+    <div class="card-title">Types of Purchase Orders</div>
+    
+    <div class="po-type-box catalog">
+      <div class="po-type-title">
+        <span>Catalog PO (UwPA)</span>
+        <span style="font-family: 'JetBrains Mono'; font-size: .75rem; color: var(--green-solid);">&lt; $50k Streamlined</span>
+      </div>
+      <div class="po-type-desc">Issued for in-scope catalog items from suppliers with University-Wide Purchasing Agreements (UwPAs). Only 1 quote is needed regardless of dollar amount due to pre-negotiated pricing. Purchases under $50,000 bypass individual purchasing pre-approvals.</div>
+    </div>
+
+    <div class="po-type-box">
+      <div class="po-type-title">
+        <span>Non-Catalog PO</span>
+        <span style="font-family: 'JetBrains Mono'; font-size: .75rem; color: var(--blue);">Approval Req.</span>
+      </div>
+      <div class="po-type-desc">Used for goods and services outside catalog limits or non-UwPA vendors. Requires Central Purchasing review and competitive bidding if exceeding standard Uniform Guidance thresholds ($15,000).</div>
+    </div>
+  </div>
+
+  <!-- Roles & Responsibilities Section -->
+  <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="eyebrow-card">Workflow Roles</div>
+    <div class="card-title">Roles & Responsibilities in CU Marketplace</div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Primary Responsibilities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Shopper</strong></td>
+            <td>Creates shopping carts in CU Marketplace; assigns cart to a Procurement Initiator.</td>
+          </tr>
+          <tr>
+            <td><strong>Procurement Initiator</strong></td>
+            <td>Performs quality checks, enters chartstrings, submits requisitions into workflow, and confirms receiving upon delivery.</td>
+          </tr>
+          <tr>
+            <td><strong>Department Approver</strong></td>
+            <td>Reviews/approves requisitions; verifies alignment with policies, budget, and proper chartstrings.</td>
+          </tr>
+          <tr>
+            <td><strong>Special / Ad Hoc Approver</strong></td>
+            <td>Inserted manually or triggered by commodity (e.g., radioactive materials, animals, capital equipment, lasers) or specific funding rules.</td>
+          </tr>
+          <tr>
+            <td><strong>Central Purchasing</strong></td>
+            <td>Reviews catalog orders &gt;$50k, non-catalog goods &gt;$500, and non-catalog services. Approves and converts requisitions to POs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- Pop-up Modal Explainer -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="po-tile-icon" id="modal-icon">✓</span>
+      <div class="modal-title" id="modal-title">Category Title</div>
+    </div>
+    <div class="modal-body" id="modal-body">
+      Category detailed description goes here.
+    </div>
+    <button class="modal-close-btn" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+// Modal Popup Logic
+function openModal(title, text, type) {
+  const overlay = document.getElementById('modal-overlay');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody = document.getElementById('modal-body');
+  const modalIcon = document.getElementById('modal-icon');
+
+  modalTitle.innerText = title;
+  modalBody.innerText = text;
+
+  if (type === 'check') {
+    modalIcon.innerText = '✓';
+    modalIcon.className = 'po-tile-icon check';
+  } else {
+    modalIcon.innerText = '✕';
+    modalIcon.className = 'po-tile-icon cross';
+  }
+
+  overlay.classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+function closeModalOnOverlay(e) {
+  if (e.target.id === 'modal-overlay') {
+    closeModal();
+  }
+}
+
+// Uniform Guidance Calculator Logic
+function updateCalc() {
+  const vendor = document.getElementById('calc-vendor').value;
+  const funding = document.getElementById('calc-funding').value;
+  const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
+
+  if (!vendor || !funding) {
+    document.getElementById('calc-po-status').innerText = "PO Status: Please select Vendor Type & Funding Source";
+    document.getElementById('calc-quote-status').innerText = "Bidding Threshold: Select parameters to view requirements";
+    document.getElementById('badge-po-text').innerText = "Pending Selection";
+    document.getElementById('badge-quote-text').innerText = "--";
+    return;
+  }
+
+  let poStatusText = "";
+  let quoteStatusText = "";
+  let badgePO = "";
+  let badgeQuote = "";
+
+  if (vendor === 'uwpa-in') {
+    poStatusText = (amount < 50000) ? "Catalog PO (Streamlined Approval)" : "Catalog PO (Central Review Required)";
+    quoteStatusText = "1 Formal Quote Only (UwPA Competitive Bidding Pre-Waived)";
+    badgePO = "Catalog PO";
+    badgeQuote = "1 Quote (UwPA)";
+  } else if (vendor === 'solesource') {
+    poStatusText = "Mandatory Non-Catalog PO Required";
+    quoteStatusText = "Single/Sole Source Justification Form & Documentation Required (1 Quote)";
+    badgePO = "PO Required";
+    badgeQuote = "Sole Source Form";
+  } else {
+    // Standard Non-Catalog Vendor
+    if (amount >= 501) {
+      poStatusText = "Mandatory Non-Catalog PO Required";
+      badgePO = "PO Required";
+    } else {
+      poStatusText = "PO Optional / Direct Voucher or P-Card Allowed";
+      badgePO = "No PO Needed";
+    }
+
+    if (amount <= 15000) {
+      quoteStatusText = "1 Written Quote Required ($0 - $15,000 Micro-purchase threshold)";
+      badgeQuote = "1 Quote";
+    } else if (amount <= 350000) {
+      if (funding === 'sponsored') {
+        quoteStatusText = "Multiple Written Quotes Required (Adequate number of qualified sources)";
+        badgeQuote = "Multiple Quotes";
+      } else {
+        quoteStatusText = "Minimum 2 Written Quotes Required ($15,001 - $350,000 threshold tier)";
+        badgeQuote = "2 Quotes";
+      }
+    } else {
+      if (funding === 'sponsored') {
+        quoteStatusText = "Formal Competitive Process (Sealed bid / competitive proposals from adequate sources)";
+        badgeQuote = "Formal RFP Process";
+      } else {
+        quoteStatusText = "Minimum 3 Written Quotes / Formal RFP Process Required ($350,001+)";
+        badgeQuote = "3+ Quotes / RFP";
+      }
+    }
+  }
+
+  // Update UI Labels
+  document.getElementById('calc-po-status').innerText = "PO Status: " + poStatusText;
+  document.getElementById('calc-quote-status').innerText = "Bidding Threshold: " + quoteStatusText;
+  document.getElementById('badge-po-text').innerText = badgePO;
+  document.getElementById('badge-quote-text').innerText = badgeQuote;
+}
+
+// Initial Run
+updateCalc();
+</script>
+
+</body>
+</html>
